@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-dotenv.config()
+  dotenv.config()
 import { connectToDatabase } from './utils/mongoose';
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan';
@@ -9,11 +9,10 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import cors from 'cors';
-import adminLoginRoute from './routes/adminLoginRoute';
-import sellerRoute from './routes/SellerRoute';
-import refreshSellerRoute from './routes/refreshTokenRoute';
-import categoryRoute from './routes/categoriesRoute';
-import productRoute from './routes/productRoute';
+import userRoute from './routes/userRoute';
+import refreshRoute from './routes/refreshRoute';
+import videoRoute from './routes/videoRoute';
+import photoRoute from './routes/photoRoute';
 const app = express();
 connectToDatabase()
 app.use(cookieParser());
@@ -23,7 +22,7 @@ const limiter = rateLimit({
   message:"Rate limit exceeded"
 })
 app.use(cors({
-  origin:"http://localhost:5173",
+  origin:["http://localhost:5173","http://localhost:5174","http://192.168.0.104"],
   methods:["GET","POST","DELETE","PUT","PATCH"],
   credentials:true
 }))
@@ -44,13 +43,11 @@ process.on('uncaughtException', err =>{
   process.exit(1);
 })
 
- app.use("/api/v1/admin",adminLoginRoute);
- app.use("/api/v1/seller",sellerRoute);  
- app.use("/api/v1/refresh",refreshSellerRoute);
- app.use("/api/v1/category",categoryRoute);
- app.use("/api/v1/product",productRoute);
-// app.use("/api/v1/cart",cartRoute)
-// app.use("/api/v1/product",productRoute)
+ app.use("/api/v1/user",userRoute);
+ app.use("/api/v1/refresh",refreshRoute);
+ app.use("/api/v1/video",videoRoute);
+ app.use("/api/v1/photo",photoRoute);
+
 app.use("*",(req,res)=>{
   res.status(404).json({data:"undefined route"})
 })
@@ -58,24 +55,3 @@ app.use("*",(req,res)=>{
 app.listen(process.env.PORT ?? 3001 ,()=>
   console.log(`>> server listening on port ${process.env.PORT ?? 3001}`)
 );
-
-
-
-
-
-
-
-
-
-// const seedProducts = async () => {
-//   await Product.insertMany( [
-//     {title:" product 1",description:"lorem1",images:["url1","url2"],price:10,stock:200},
-//     {title:" product 2",description:"lorem2",images:["url1","url2"],price:20,stock:10},
-//     {title:" product 3",description:"lorem3",images:["url1","url2"],price:3,stock:100},
-//     {title:" product 4",description:"lorem4",images:["url1","url2"],price:40,stock:20},
-//     {title:" product 5",description:"lorem5",images:["url1","url2"],price:5,stock:30},
-//     {title:" product 6",description:"lorem6",images:["url1","url2"],price:25,stock:5},
-//   ])
-
-// }
-// seedProducts()

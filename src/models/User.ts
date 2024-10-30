@@ -1,24 +1,26 @@
-import {Schema,Document,models,model, ObjectId} from "mongoose";
+import {Schema,Document,models,model} from "mongoose";
 import validator from "validator"
-export interface IBuyer extends Document  {
+export interface IUser extends Document  {
   name: string
   email: string
-  address: string
-  roles: number[]
   password: string
   refreshToken: string
+  method:string
+  passwordResetToken: string
+  passwordResetTokenExpiration: Date
 }
-const BuyerSchema = new Schema<IBuyer>({
+const userSchema = new Schema<IUser>({
   name:{type: String , trim:true ,required: true},
-  address:{type: String , trim:true },
-  roles:{type: [Number], required: true , default : [2001] },
   email:{type: String,unique: true ,required: true ,validate:[validator.isEmail]},
   password:{type: String, trim:true ,required: true,select:false},
-  refreshToken:{type: String, trim:true}
+  method:{type: String, trim:true ,required:true ,default:"manual"},
+  refreshToken:{type: String, trim:true},
+  passwordResetToken:{select:false,type:String,default:null},
+  passwordResetTokenExpiration:{type:Date, default:null}
 },{
    timestamps: true
 })
 
-const Buyer = models.Buyer || model<IBuyer>('Buyer',BuyerSchema);
+const User = models.User || model<IUser>('User',userSchema);
 
-export default Buyer
+export default User
