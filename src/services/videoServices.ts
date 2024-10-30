@@ -5,11 +5,11 @@ import Video from "../models/Video"
 import { fetchVideos } from "../controllers/videoControllers"
 
 export const fetchVideosDB = async ({search,curPage,perPage}:fetchVideos) => {
-  try{ 
+  try{ console.log("curPage >>" , curPage); console.log("search >>" , search);
     const query = search ? {"description.en":{ $regex: new RegExp(search, 'i') }} : {} ; console.log("perPage >>" , perPage)
-    const videosLen = await Video.countDocuments(query); //console.log("photosLen >>", videosLen)
-    const pagesLen = Math.ceil(videosLen / perPage);//console.log("pagesLen >>", pagesLen)
-    const skip = ( curPage - 1 ) * perPage ; //console.log("skip >>", skip)
+    const videosLen = await Video.countDocuments(query); console.log("photosLen >>", videosLen);console.log("query >>" , query)
+    const pagesLen = Math.ceil(videosLen / perPage);console.log("pagesLen >>", pagesLen)
+    const skip = ( curPage - 1 ) * perPage ; console.log("skip >>", skip)
     const videos = await Video.find(query).skip(skip).limit(perPage)
     if(!videos)
       return { statusCode : 404, error:"no Photos found"}

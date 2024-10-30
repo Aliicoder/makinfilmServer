@@ -4,7 +4,7 @@ import Photo from "../models/Photo"
 import { fetchPhotos } from "../controllers/photoControllers"
 
 export const fetchPhotosDB = async ({search,curPage,perPage}:fetchPhotos) => {
-  try{ console.log("curPage >> ", curPage)
+  try{ 
     const query = search ? {description:{ $regex: new RegExp(search, 'i') }} : {} ; console.log("perPage >>" , perPage)
     const photosLen = await Photo.countDocuments(query);console.log("photosLen >>", photosLen)
     const pagesLen = Math.ceil(photosLen / perPage);console.log("pagesLen >>", pagesLen)
