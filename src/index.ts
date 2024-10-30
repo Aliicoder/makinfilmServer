@@ -22,7 +22,7 @@ const limiter = rateLimit({
   message:"Rate limit exceeded"
 })
 app.use(cors({
-  origin:["http://localhost:5173","http://localhost:5174","http://192.168.0.104","https://makinfilm-client.vercel.app/","https://makinfilm-client-42hg.vercel.app/"],
+  origin:["http://localhost:5173","http://localhost:5174","http://192.168.0.104","https://makinfilm-client-42hg.vercel.app"],
   methods:["GET","POST","DELETE","PUT","PATCH"],
   credentials:true
 }))
